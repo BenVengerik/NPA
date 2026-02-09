@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
+import matplotlib.ticker as ticker
 import numpy as np
 import pandas as pd
 from pathlib import Path
@@ -13,17 +14,15 @@ SESSION = "pup1"        # Change this to compare animals
 INCLUDE_MUA = True      
 
 STIMULI = [
-    "brush_tail",      # Start with the strongest response
+    "brush_tail",      
     "brush_contra",
     "brush_ipsi"
 ]
 
 # --- MANUAL SETTINGS ---
-# Set this to standardize colors (Hz). 
-# If None, it calculates a "Global Max" from the data itself.
-FIXED_VMAX = 25  # e.g., 50. Set to None for auto-scaling per session.
+FIXED_VMAX = 120  # e.g., 50. Set to None for auto-scaling per session.
 
-# Time Window (Zoomed in for single trials)
+# Time Window
 PRE_TIME = 0.1     # Seconds before stim
 POST_TIME = 1.5    # Seconds after stim
 
@@ -39,7 +38,7 @@ def get_val(r, col):
 
 def load_session_data(session, stim):
     # Load Meta
-    csv_path = Path("data/sessions_local.csv") if Path("data/sessions_local.csv").exists() else Path("data/sessions.csv")
+    csv_path = Path("data/sessions.csv")
     meta = pd.read_csv(csv_path)
     row = meta.loc[(meta['session'] == session) & (meta['stim'] == stim)]
     if len(row) == 0: return None
@@ -48,12 +47,13 @@ def load_session_data(session, stim):
     # Load Anatomy
     s1_upper = get_val(row, 's1_upper_um')
     s1_lower = get_val(row, 's1_lower_um')
+    
+    # --- LAYERS ---
     layers = {
         'L1':   get_val(row, 'l1_end'),
         'L2/3': get_val(row, 'l23_end'),
         'L4':   get_val(row, 'l4_end'),
-        'L5':   get_val(row, 'l5_end'),
-        'L6':   get_val(row, 'l6_end')
+        'L5/6': get_val(row, 'l6_end')  # Merged L5 and L6
     }
     
     # Load Times
@@ -112,10 +112,12 @@ def plot_trial_grid(session, stim):
     
     stim_times = data['stim_times']
     n_trials = len(stim_times)
+    s1_top = data['bounds'][1]
+    s1_bottom = data['bounds'][0]
     
-    # 1. GENERATE HEATMAPS FOR ALL TRIALS
+    # 1. GENERATE HEATMAPS
     t_bins = np.arange(-PRE_TIME, POST_TIME + BIN_TIME, BIN_TIME)
-    d_bins = np.arange(data['bounds'][0], data['bounds'][1] + BIN_DEPTH, BIN_DEPTH)
+    d_bins = np.arange(s1_bottom, s1_top + BIN_DEPTH, BIN_DEPTH)
     
     trial_heatmaps = []
     
@@ -124,7 +126,6 @@ def plot_trial_grid(session, stim):
         idx0 = np.searchsorted(data['spikes'], t0)
         idx1 = np.searchsorted(data['spikes'], t1)
         
-        # Extract spike chunk
         chunk_t = data['spikes'][idx0:idx1] - onset
         chunk_d = data['depths'][idx0:idx1]
         
@@ -133,17 +134,14 @@ def plot_trial_grid(session, stim):
         else:
             H, _, _ = np.histogram2d(chunk_t, chunk_d, bins=[t_bins, d_bins])
             
-        # Smooth and convert to Hz
-        H = H / BIN_TIME # Raw count -> Hz
+        H = H / BIN_TIME
         H_smooth = gaussian_filter(H, sigma=(1, 1))
         trial_heatmaps.append(H_smooth)
 
-    # 2. DETERMINE GLOBAL VMAX
-    # We want all subplots to share the same color scale
+    # 2. VMAX
     if FIXED_VMAX:
         vmax = FIXED_VMAX
     else:
-        # Find the robust max across all trials combined
         all_max = [np.percentile(h, 99.5) for h in trial_heatmaps]
         vmax = max(all_max) if all_max else 10
     
@@ -152,10 +150,8 @@ def plot_trial_grid(session, stim):
     # 3. SETUP GRID
     cols = 4
     rows = math.ceil(n_trials / cols)
-    
-    # Dynamic Figure Height: 3 inches per row
     fig = plt.figure(figsize=(16, rows * 3))
-    gs = gridspec.GridSpec(rows, cols, wspace=0.1, hspace=0.3)
+    gs = gridspec.GridSpec(rows, cols, wspace=0.1, hspace=0.4)
     
     # 4. PLOT LOOP
     for i in range(n_trials):
@@ -163,7 +159,6 @@ def plot_trial_grid(session, stim):
         col_idx = i % cols
         ax = fig.add_subplot(gs[row_idx, col_idx])
         
-        # Plot Heatmap
         im = ax.imshow(trial_heatmaps[i].T, aspect='auto', cmap='inferno', origin='lower',
                        extent=[t_bins[0], t_bins[-1], d_bins[0], d_bins[-1]],
                        vmax=vmax)
@@ -171,39 +166,57 @@ def plot_trial_grid(session, stim):
         # Overlays
         ax.axvline(0, color='cyan', linestyle='--', alpha=0.8)
         
-        # Draw Layers
+        # Layers (Merged L5/6)
         current_top = data['bounds'][1]
         layers = data['layers']
-        for name in ['L1', 'L2/3', 'L4', 'L5', 'L6']:
+        
+        for name in ['L1', 'L2/3', 'L4', 'L5/6']:
             bot = layers.get(name, np.nan)
             if not np.isnan(bot):
                 ax.axhline(bot, color='white', linestyle='-', linewidth=0.5, alpha=0.5)
-                # Add text only on the first column to reduce clutter
                 if col_idx == 0:
                     ax.text(-PRE_TIME + 0.02, (current_top + bot)/2, name, 
                             color='white', fontsize=8, va='center', fontweight='bold')
                 current_top = bot
         
         # Styling
-        ax.set_title(f"Trial {i+1}", fontsize=10, fontweight='bold', color='white', 
-                     bbox=dict(facecolor='black', alpha=0.5, edgecolor='none'))
+        t_onset = stim_times[i]
+        ax.set_title(f"Trial {i+1} | t={t_onset:.1f}s", fontsize=10)
         
         if row_idx == rows - 1:
             ax.set_xlabel("Time (s)")
         else:
             ax.set_xticklabels([])
             
+        # --- Y-AXIS TRANSFORMATION (FORCED 0 START) ---
         if col_idx == 0:
             ax.set_ylabel("Depth (µm)")
+            
+            # 1. Define Tick Spacing (e.g., every 250 um)
+            tick_step = 250
+            
+            # 2. Generate "Depth" labels starting exactly at 0
+            # Example: [0, 250, 500, 750 ...]
+            max_depth = s1_top - s1_bottom
+            depth_labels = np.arange(0, max_depth, tick_step)
+            
+            # 3. Convert back to RAW Y coordinates
+            # (Raw Y = Top - Depth)
+            raw_locs = s1_top - depth_labels
+            
+            # 4. Apply
+            ax.set_yticks(raw_locs)
+            ax.set_yticklabels([f"{int(d)}" for d in depth_labels])
+            
         else:
             ax.set_yticklabels([])
             
-    # Remove empty axes if any
+    # Remove empty axes
     for i in range(n_trials, rows * cols):
         fig.delaxes(fig.add_subplot(gs[i // cols, i % cols]))
 
-    # Add Colorbar (Global)
-    cbar_ax = fig.add_axes([0.92, 0.15, 0.015, 0.7]) # x, y, width, height
+    # Colorbar
+    cbar_ax = fig.add_axes([0.92, 0.15, 0.015, 0.7]) 
     cbar = plt.colorbar(im, cax=cbar_ax)
     cbar.set_label(f"Firing Rate (Hz) | Max: {vmax:.1f}", fontsize=12)
     
