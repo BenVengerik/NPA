@@ -9,9 +9,10 @@ beautifulsoup4 @ file:///C:/b/abs_95vq944bnw/croot/beautifulsoup4-split_17564531
 bleach @ file:///C:/Users/dev-admin/buildout/croot/bleach_1732924075369/work
 Bottleneck @ file:///C:/b/abs_816hr2khp1/croot/bottleneck_1731058648110/work
 brotlicffi @ file:///C:/miniconda3/conda-bld/brotlicffi_1761745219545/work
-certifi @ file:///C:/miniconda3/conda-bld/certifi_1759786076808/work/certifi
+certifi @ file:///C:/Users/task_176765924055489/croot/certifi_1767659363027/work/certifi
 cffi @ file:///C:/miniconda3/conda-bld/cffi_1761832792955/work
 charset-normalizer @ file:///C:/miniconda3/conda-bld/charset-normalizer_1761744975868/work
+choreographer==1.2.1
 colorama @ file:///C:/Users/dev-admin/perseverance-python-buildout/croot/colorama_1729036581634/work
 comm @ file:///C:/Users/dev-admin/perseverance-python-buildout/croot/comm_1729042212228/work
 contourpy @ file:///C:/b/abs_f2u2o_8s9g/croot/contourpy_1732540071787/work
@@ -27,6 +28,7 @@ h5py==3.15.1
 httpcore @ file:///C:/b/abs_25m7_xthp6/croot/httpcore_1748526065845/work
 httpx @ file:///C:/miniconda3/conda-bld/httpx_1760447475275/work
 idna @ file:///C:/Users/dev-admin/perseverance-python-buildout/croot/idna_1729038997316/work
+iniconfig==2.3.0
 ipykernel @ file:///C:/miniconda3/conda-bld/ipykernel_1757583381660/work
 ipython @ file:///C:/miniconda3/conda-bld/ipython_1759328532727/work
 ipython_pygments_lexers @ file:///C:/b/abs_b66hj1lo19/croot/ipython_pygments_lexers_1744753262043/work
@@ -44,7 +46,9 @@ jupyter_server_terminals @ file:///C:/b/abs_adjrm9dtns/croot/jupyter_server_term
 jupyterlab @ file:///C:/miniconda3/conda-bld/jupyterlab_1758125082061/work
 jupyterlab_pygments @ file:///C:/b/abs_d5alfet8m6/croot/jupyterlab_pygments_1741124274578/work
 jupyterlab_server @ file:///C:/miniconda3/conda-bld/jupyterlab_server_1761751443648/work
+kaleido==1.2.0
 kiwisolver @ file:///C:/b/abs_faf90xet7a/croot/kiwisolver_1737040915779/work
+logistro==2.0.1
 MarkupSafe @ file:///C:/b/abs_a0ma7ge0jc/croot/markupsafe_1738584052792/work
 matplotlib==3.10.6
 matplotlib-inline @ file:///C:/miniconda3/conda-bld/matplotlib-inline_1758520260078/work
@@ -52,6 +56,7 @@ mistune @ file:///C:/b/abs_77yql3poyz/croot/mistune_1741124004410/work
 mkl-service==2.5.2
 mkl_fft @ file:///C:/miniconda3/conda-bld/mkl_fft_1761592916781/work
 mkl_random @ file:///C:/miniconda3/conda-bld/mkl_random_1761593076691/work
+narwhals==2.20.0
 nbclient @ file:///C:/b/abs_a09c4t3h8x/croot/nbclient_1741124030330/work
 nbconvert @ file:///C:/b/abs_c27_60dzt8/croot/nbconvert-meta_1741191385337/work
 nbformat @ file:///C:/Users/dev-admin/buildout/croot/nbformat_1739559077024/work
@@ -61,13 +66,17 @@ notebook_shim @ file:///C:/b/abs_9ctyfgpncn/croot/notebook-shim_1741707829491/wo
 numexpr @ file:///C:/b/abs_3buvfgcf6r/croot/numexpr_1755766488094/work
 numpy @ file:///C:/miniconda3/conda-bld/numpy_and_numpy_base_1760547750618/work/dist/numpy-2.3.3-cp313-cp313-win_amd64.whl#sha256=2ce6753b643572567dbca1781ab9bd4fc2ff03e38a66658e41dfb1b198a26cba
 open-ephys-python-tools==1.0.0
+orjson==3.11.8
 overrides @ file:///C:/Users/dev-admin/perseverance-python-buildout/croot/overrides_1729041221570/work
 packaging @ file:///C:/miniconda3/conda-bld/packaging_1761049099114/work
 pandas @ file:///C:/miniconda3/conda-bld/pandas_1759822262809/work/dist/pandas-2.3.3-cp313-cp313-win_amd64.whl#sha256=ee1164c2c28648887529c4d3fb2919f738fb0d776be083cc1448b87ce36e0d50
 pandocfilters @ file:///C:/miniconda3/conda-bld/pandocfilters_1756977623249/work
 parso @ file:///C:/b/abs_834b4mj92b/croot/parso_1733963322289/work
+patsy==1.0.2
 pillow @ file:///C:/b/abs_b06nvnir5m/croot/pillow_1752524543576/work
 platformdirs @ file:///C:/b/abs_ddh15014or/croot/platformdirs_1744273060660/work
+plotly==6.7.0
+pluggy==1.6.0
 prometheus_client @ file:///C:/b/abs_8b175q_ub8/croot/prometheus_client_1744271638821/work
 prompt_toolkit @ file:///C:/miniconda3/conda-bld/prompt-toolkit_1761745018781/work
 psutil @ file:///C:/miniconda3/conda-bld/psutil_1757104557380/work
@@ -78,6 +87,8 @@ pyparsing @ file:///C:/Users/dev-admin/buildout/croot/pyparsing_1735861809022/wo
 PyQt6==6.9.1
 PyQt6_sip @ file:///C:/miniconda3/conda-bld/pyqt-split_1757511039072/work/pyqt_sip
 PySocks @ file:///C:/miniconda3/conda-bld/pysocks_1761753030965/work
+pytest==9.0.3
+pytest-timeout==2.4.0
 python-dateutil @ file:///C:/Users/dev-admin/perseverance-python-buildout/croot/python-dateutil_1729038406576/work
 python-json-logger @ file:///C:/b/abs_0cm_mnox0z/croot/python-json-logger_1734370042436/work
 pytz @ file:///C:/b/abs_f8wdzeix0n/croot/pytz_1752135878094/work
@@ -90,14 +101,18 @@ requests @ file:///C:/b/abs_f53smfvswb/croot/requests_1756709376206/work
 rfc3339_validator @ file:///C:/Users/dev-admin/perseverance-python-buildout/croot/rfc3339-validator_1729040163441/work
 rfc3986_validator @ file:///C:/Users/dev-admin/perseverance-python-buildout/croot/rfc3986-validator_1729040192034/work
 rpds-py @ file:///C:/b/abs_0c6z5kcdb6/croot/rpds-py_1736545465023/work
+scikit-posthocs==0.11.4
 scipy==1.16.3
+seaborn @ file:///C:/b/abs_0bv5x0ucxb/croot/seaborn_1749110315600/work
 Send2Trash @ file:///C:/b/abs_7e73ol18dl/croot/send2trash_1736542724140/work
 setuptools==80.9.0
+simplejson==4.0.1
 sip @ file:///C:/b/abs_f6ow8vlbb7/croot/sip_1756224172742/work
 six @ file:///C:/b/abs_149wuyuo1o/croot/six_1744271521515/work
 sniffio @ file:///C:/Users/dev-admin/perseverance-python-buildout/croot/sniffio_1729040228331/work
 soupsieve @ file:///C:/Users/dev-admin/perseverance-python-buildout/croot/soupsieve_1729039543636/work
 stack_data @ file:///C:/miniconda3/conda-bld/stack_data_1757067051197/work
+statsmodels==0.14.6
 terminado @ file:///C:/miniconda3/conda-bld/terminado_1757934993764/work
 tinycss2 @ file:///C:/Users/dev-admin/buildout/croot/tinycss2_1739559171127/work
 tornado @ file:///C:/b/abs_7dzpc171lf/croot/tornado_1748956950306/work
